@@ -13,7 +13,13 @@ jobs:
     steps:
       - checkout
       - run: python test_main.py
-    
+  deploy:
+    docker:
+      - image: cimg/python:3.11
+    steps:
+      - run: echo "Deploying to the Production Server!!!"
+      - run: sleep 30
+      - run: echo "Deployment Completed for the Production Server!"
 
 workflows:
   build_now:
@@ -22,3 +28,9 @@ workflows:
       - test:
           requires:
             - build
+      - deploy:
+          requires:
+            - test
+          filters:
+            branches:
+              only: master
